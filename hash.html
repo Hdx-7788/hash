@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <a href="#/home">首页</a>
+    <a href="#/list">列表</a>
+    <div id="box"></div>
+    <script>
+      class Router {
+        constructor({ routes }) {
+          this.box = document.getElementById("box");
+          this.routes = routes;
+          this.events = {};
+          this.routes.forEach(item => {
+              console.log(item.path)
+            this.events[item.path] = function() {
+              box.innerHTML = item.component;
+            };
+          });
+          this.init();
+        }
+        init() {
+          window.addEventListener("hashchange", this.updataView.bind(this));
+          window.addEventListener("load", this.updataView.bind(this));
+        }
+        updataView() {
+          let url = window.location.hash.slice(1);
+          this.events[url]();
+        }
+      }
+
+      new Router({
+        routes: [
+          {
+            path: "/home",
+            component: "主页"
+          },
+          {
+            path: "/list",
+            component: "列表"
+          }
+        ]
+      });
+    </script>
+  </body>
+</html>
